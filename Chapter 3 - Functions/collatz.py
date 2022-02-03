@@ -1,4 +1,5 @@
 # Collatz Sequence from user input
+# Chapter 3 - Functions
 def collatz(number):
     if number % 2 == 0:
         ret = number // 2

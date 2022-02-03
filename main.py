@@ -1,2 +1,2 @@
-# file for currently worked on file
-# Next Chapter: 4 (Lists)
+# file for currently worked on code (if unfinished)
+# Next Chapter: 5 (Dictionaries and Structuring Data)

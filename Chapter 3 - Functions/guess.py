@@ -1,5 +1,7 @@
 # Guess the number
+# Chapter 3 - Functions
 import random
+
 guess = None
 number = random.randint(1, 20)
 
