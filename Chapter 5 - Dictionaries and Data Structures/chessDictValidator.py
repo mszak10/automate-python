@@ -60,14 +60,19 @@ def is_valid_board(brd, tests=False):
         white_pawn = True
 
     # List out all the conditions and their values (optional)
+    # Added some string malipulation to it
     if tests is True:
-        print("Kings: " + str(kings) + " (expected: True)")
-        print("black_count: " + str(black_count) + " (expected: True)")
-        print("white_count: " + str(white_count) + " (expected: True)")
-        print("black_pawn: " + str(black_pawn) + " (expected: True)")
-        print("white_pawn: " + str(white_pawn) + " (expected: True)")
-        print("square_error: " + str(square_error) + " (expected: False)")
-        print("piece_error: " + str(piece_error) + " (expected: False)")
+        print("\n")
+        print("Checks:".center(38, '='))
+        print(("Kings: ".ljust(15, '.') + str(kings) + " (expected: True)"))
+        print("black_count: ".ljust(15, '.') + str(black_count) + " (expected: True)")
+        print("white_count: ".ljust(15, '.') + str(white_count) + " (expected: True)")
+        print("black_pawn: ".ljust(15, '.') + str(black_pawn) + " (expected: True)")
+        print("white_pawn: ".ljust(15, '.') + str(white_pawn) + " (expected: True)")
+        print("Errors:".center(38, '='))
+        print("square_error: ".ljust(15, '.') + str(square_error) + " (expected: False)")
+        print("piece_error: ".ljust(15, '.') + str(piece_error) + " (expected: False)")
+        print("Full outcome: ", end="")
 
     # Aggregate all checks into an if, return true if all conditions are matched (two ifs to fit into 120 char limit)
     if kings is True and black_count is True and white_count is True and black_pawn is True and white_pawn is True:
