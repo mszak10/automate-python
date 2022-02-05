@@ -1,5 +1,5 @@
 #! python3
-# Chapter 5 - Dictionaries and Data Structures
+# Chapter 6 - Manipulating Strings
 # mclip.py - A multi-clipboard program.
 import sys, pyperclip
 
