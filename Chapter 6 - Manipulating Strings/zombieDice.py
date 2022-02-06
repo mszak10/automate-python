@@ -1,6 +1,7 @@
 # Chapter 6 - Manipulating Strings
 # tablePrinter.py - Print list of lists of strings in a table
 # TODO: Page 155 Points 2-4
+# TODO: Properly counting how many guns and brains player has && multiplayer support && win cond
 import random
 
 green_dice = ['foot', 'foot', 'brain', 'brain', 'brain', 'gun']
@@ -9,7 +10,8 @@ red_dice = ['foot', 'foot', 'brain', 'gun', 'gun', 'gun']
 
 diff_tab = ["Easy", "Normal", "Hard", "Extreme"]
 random_face = ""
-difficulty = 0
+playerface = []
+difficulty = gunc = brainc = footc = 0
 
 
 def set_difficulty(diff):
@@ -50,13 +52,29 @@ def set_difficulty(diff):
     return d, dice_tab
 
 
-dd = False
+def throw_dice(howmuch=3):
+    # Take three dice and throw
+    for i in range(howmuch):
+        random_dice = random.choice(cup)
+        if random_dice == "G":
+            random_face = random.choice(green_dice)
+        if random_dice == "Y":
+            random_face = random.choice(yellow_dice)
+        if random_dice == "R":
+            random_face = random.choice(red_dice)
+        list(cup).remove(random_dice)
+        print(random_face, end=" ")
+        playerface.append(random_face)
+    print("")
+
+
 # Config:
 playercount = input("How many players?")  # Currently unused
 while True:
+    dd = False
     try:
         difficulty = int(input("Choose Difficulty (0-3)"))
-        if not 0 <= difficulty >= 3 and difficulty > -1:
+        if not 0 <= difficulty > 3 and difficulty > -1:
             dd = True
     except ValueError:
         print("Error! Input correct value!")
@@ -66,19 +84,27 @@ while True:
 # Place all the dice in the cup:
 cup = set_difficulty(difficulty)[1]
 
-playerface = []
+# Take three dice and throw (Default = 3)
+throw_dice()
 
-# Take three dice and throw
-for i in range(3):
-    random_dice = random.choice(cup)
-    if random_dice == "G":
-        random_face = random.choice(green_dice)
-    if random_dice == "Y":
-        random_face = random.choice(yellow_dice)
-    if random_dice == "R":
-        random_face = random.choice(red_dice)
-    list(cup).remove(random_dice)
-    print(random_face, end=" ")
-    playerface.append(random_face)
+for i in playerface:
+    if i == "gun":
+        gunc += 1
+    if i == "brain":
+        brainc += 1
+    if i == "foot":
+        footc += 1
 
-print(playerface)
+while True:
+    reroll = input(f'''You have:
+    {brainc} brains
+    {gunc} guns
+    {footc} feet
+    Would you like to reroll your {footc} foot dice and {3-footc} new dice? (Y/N)''')
+    if reroll == "Y":
+        footc = 0
+        throw_dice()
+    elif reroll == "N":
+        break
+    else:
+        print("Input Y or N!")
