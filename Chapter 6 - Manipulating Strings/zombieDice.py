@@ -1,11 +1,13 @@
 # Chapter 6 - Manipulating Strings
 # tablePrinter.py - Print list of lists of strings in a table
 # TODO: Page 155 Points 2-4
-# TODO: fix multiplayer support && win cond
-# I can't do this today, I need to rest. Must figure out why points are funky and not saved properly
-# TODO: fix point counting, I think they might be somehow shared between objects and I don't know why
-# TODO: Make sure playerface is properly reset before each round
+# TODO: Rerolling your own dice properly instead of returning it into the cup
+# TODO: Tiebreaks
+# TODO: Nice graphical interface
+# TODO: Display current dice in the cup (add condition where all 13 dice have been thrown)
 import random
+# Current version:
+VERSION = "beta 1.0"
 
 green_dice = ['foot', 'foot', 'brain', 'brain', 'brain', 'gun']
 yellow_dice = ['foot', 'foot', 'brain', 'brain', 'gun', 'gun']
@@ -15,7 +17,9 @@ diff_tab = ["Easy", "Normal", "Hard", "Extreme"]
 # playerface = []
 difficulty = 0
 player_list = []
+end = None
 
+print(f"Welcome to the Zombie Dice game (Version {VERSION})")
 playercount = input("How many players?")
 
 
@@ -80,9 +84,10 @@ class Game:
 
     playerface = []
     brainc = gunc = footc = points = 0
-    once = True
-    end = False
     eliminated = False
+    global end
+    if end is None:
+        end = False
 
     def throw_dice(self, howmuch=3):
         # Take three dice and throw
@@ -101,14 +106,15 @@ class Game:
         print("")
 
     def round(self, player=404):
+        global end
         self.throw_dice()
         self.gunc = self.brainc = self.footc = 0
-        for i in self.playerface:
-            if i == "gun":
+        for x in self.playerface:
+            if x == "gun":
                 self.gunc += 1
-            elif i == "brain":
+            elif x == "brain":
                 self.brainc += 1
-            elif i == "foot":
+            elif x == "foot":
                 self.footc += 1
         self.playerface.clear()
         while True:
@@ -123,31 +129,39 @@ class Game:
                 print(f"Game over for Player {player + 1}!")
                 self.eliminated = True
                 break
-            if reroll == "Y" and Game().end is not True:
+            if reroll == "Y" and end is not True:
                 set_difficulty(difficulty, self.footc)
                 self.footc = 0
                 self.playerface.clear()
                 self.throw_dice()
-                for i in self.playerface:
-                    if i == "gun":
+                for x in self.playerface:
+                    if x == "gun":
                         self.gunc += 1
-                    elif i == "brain":
+                    elif x == "brain":
                         self.brainc += 1
-                    elif i == "foot":
+                    elif x == "foot":
                         self.footc += 1
                 self.playerface.clear()
                 if self.gunc > 2:
-                    print(f"Game over for Player {player+1}!")
+                    print(f"Game over for Player {player + 1}!")
                     self.eliminated = True
                     self.playerface.clear()
                     break
                 if self.brainc > 12 or self.points > 12:
-                    print(f"Player {player+1} wins!")
-                    Game().end = True
+                    self.points += self.brainc
+                    print(f"Player {player + 1} wins!")
+                    end = True
                     break
-            elif reroll == "N":
+            elif reroll == "N" and end is not True:
                 print("Round ended!")
+                self.points += self.brainc
                 self.playerface.clear()
+                if self.brainc > 12 or self.points > 12:
+                    print(f"Player {player + 1} wins!")
+                    end = True
+                    break
+                break
+            elif end:
                 break
             else:
                 print("Input Y or N!")
@@ -157,22 +171,21 @@ for i in range(int(playercount)):
     player_list.append(Game(int(i)))
 
 while True:  # NOTE: this goes into infinite loop when all players are eliminated before the game is ended
-    i = 0
+    # i = 0
     # Place all the dice in the cup:
     cup = set_difficulty(difficulty)[1]
     for i in range(int(playercount)):
         if not player_list[i].eliminated:
-            #if player_list[i].once:
-             #   player_list[i].throw_dice()
-            player_list[i].once = False
             player_list[i].round(i)
-            if not player_list[i].eliminated:
-                player_list[i].points = player_list[i].brainc
         else:
-            print("Game Over!")
-            Game(int(playercount)).end = True
+            print(f"Skipping Player {i + 1}")
+            continue
+    for i in range(int(playercount)):
+        end = True
+        if not player_list[i].eliminated:
+            end = False
             break
-    if Game(int(playercount)).end:
+    if end:
         break
 
 print("RESULTS:")
