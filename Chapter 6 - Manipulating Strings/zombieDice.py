@@ -3,13 +3,13 @@
 # TODO: Page 155 Points 3-4
 # TODO: Re-rolling your own dice properly instead of returning it into the cup
 # TODO: Tiebreaks
-# TODO: Display current dice in the cup (add condition where all 13 dice have been thrown)
+# TODO: add condition where all 13 dice have been thrown
 import os
 import random
 import time
-# Current version:
-VERSION = "beta 1.1"
 
+# Current version:
+VERSION = "beta 1.1.1"
 
 diff_tab = ["Easy", "Normal", "Hard", "Extreme"]
 # playerface = []
@@ -115,6 +115,9 @@ class Game:
     def throw_dice(self, howmuch=3):
         # Take three dice from the cup and throw
         random_face = ""
+        foot_dice = ["", "", ""]
+        r_dice = []
+        r_dice.clear()
         print("You rolled:".center(21, "="))
         for z in range(howmuch):
             random_dice = random.choice(cup)
@@ -124,9 +127,19 @@ class Game:
                 random_face = random.choice(self.yellow_dice)
             if random_dice == "R":
                 random_face = random.choice(self.red_dice)
-            list(cup).remove(random_dice)
+            if random_face == "foot":
+                foot_dice[z] = random_dice
+            r_dice.append(random_dice)
+            list(cup).remove(random_dice)  # Does not remove dice from cup (possibly has no access to cup var)
             print(random_face.center(7, "."), end="")
             self.playerface.append(random_face)
+        print("")
+        print("Dice colors:".center(21, "="))
+        for y in range(howmuch):
+            print(r_dice[y].center(7, "."), end="")
+        print("")
+        print("Dice in cup:".center(21, "="))
+        print(list(cup))
         print("")
 
     def round(self, player=404):
