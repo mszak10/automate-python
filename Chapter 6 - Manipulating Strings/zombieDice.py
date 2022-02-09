@@ -1,15 +1,17 @@
 # Chapter 6 - Manipulating Strings
-# tablePrinter.py - Print list of lists of strings in a table
+# zombieDice.py - This program lets you play zombie Dice
 # TODO: Page 155 Points 3-4
 # TODO: Re-rolling your own dice properly instead of returning it into the cup
 # TODO: Tiebreaks
 # TODO: add condition where all 13 dice have been thrown
+# PROJECT ON HOLD, this consumes too much time to debug, I have learnt the relevant part already
+# I want to avoid getting burnt out because of this. The game works well enough
 import os
 import random
 import time
 
 # Current version:
-VERSION = "beta 1.1.1"
+VERSION = "beta 1.1.2"
 
 diff_tab = ["Easy", "Normal", "Hard", "Extreme"]
 # playerface = []
@@ -43,42 +45,41 @@ def set_difficulty(diff, add_yellow=404):  # Need to optimize this
     global once
     if once is None:  # this makes sure difficulty info is printed only once
         once = True
-    if add_yellow == 404:
-        if diff == 0:
-            green_num = 7
-            yellow_num = 4
-            red_num = 2
-        elif diff == 1:
-            green_num = 5
-            yellow_num = 3
-            red_num = 5
-        elif diff == 2:
-            green_num = 4
-            yellow_num = 3
-            red_num = 6
-        elif diff == 3:
-            green_num = 3
-            yellow_num = 3
-            red_num = 7
-        else:
-            return 4, 0, 0, 0
-        for x in range(green_num):
-            dice_tab.append("G")
-        for x in range(yellow_num):
-            dice_tab.append("Y")
-        for x in range(red_num):
-            dice_tab.append("R")
-        if once:
-            print(f'''Difficulty is {d}.
-                                Following are how many dice there is:
-                                Total: 13
-                                Green: {green_num}
-                                Yellow: {yellow_num}
-                                Red: {red_num}
-                                ''')
-            time.sleep(2)
-            once = False
+    if diff == 0:
+        green_num = 7
+        yellow_num = 4
+        red_num = 2
+    elif diff == 1:
+        green_num = 5
+        yellow_num = 3
+        red_num = 5
+    elif diff == 2:
+        green_num = 4
+        yellow_num = 3
+        red_num = 6
+    elif diff == 3:
+        green_num = 3
+        yellow_num = 3
+        red_num = 7
     else:
+        return 4, 0, 0, 0
+    for x in range(green_num):
+        dice_tab.append("G")
+    for x in range(yellow_num):
+        dice_tab.append("Y")
+    for x in range(red_num):
+        dice_tab.append("R")
+    if once:
+        print(f'''Difficulty is {d}.
+                            Following are how many dice there is:
+                            Total: 13
+                            Green: {green_num}
+                            Yellow: {yellow_num}
+                            Red: {red_num}
+                            ''')
+        time.sleep(2)
+        once = False
+    if add_yellow != 404:
         for x in range(add_yellow):
             dice_tab.append("Y")
 
@@ -130,7 +131,7 @@ class Game:
             if random_face == "foot":
                 foot_dice[z] = random_dice
             r_dice.append(random_dice)
-            list(cup).remove(random_dice)  # Does not remove dice from cup (possibly has no access to cup var)
+            list(cup).remove(random_dice)  # TODO: Does not remove dice from cup (possibly has no access to cup var)
             print(random_face.center(7, "."), end="")
             self.playerface.append(random_face)
         print("")
@@ -138,9 +139,9 @@ class Game:
         for y in range(howmuch):
             print(r_dice[y].center(7, "."), end="")
         print("")
-        print("Dice in cup:".center(21, "="))
-        print(list(cup))
-        print("")
+        # print("Dice in cup:".center(21, "="))
+        # print(list(cup))
+        # print("")
 
     def round(self, player=404):
         global end
@@ -183,7 +184,6 @@ class Game:
                         self.gunc += 1
                     elif x == "brain":
                         self.brainc += 1
-                    elif x == "foot":
                         self.footc += 1
                 self.playerface.clear()
                 if self.gunc > 2:
@@ -220,8 +220,8 @@ for i in range(int(playercount)):  # add {playercount} objects of class Game (pl
     player_list.append(Game(int(i)))
 
 while True:
-    # Place all the dice in the cup:
     # player_list[i] = player object number i + 1 (list of objects of class Game)
+    # Place all the dice in the cup:
     cup = set_difficulty(difficulty)[1]
     for i in range(int(playercount)):
         clear()
