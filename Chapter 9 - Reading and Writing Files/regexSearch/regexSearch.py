@@ -4,9 +4,8 @@ import os
 import re
 import pyinputplus as pyip
 
-userThingy = pyip.inputStr(prompt="What are you looking for? ")
-regexObj = re.compile(str(userThingy))
-found = None
+userRegex = pyip.inputStr(prompt="What are you looking for? ")
+regexObj = re.compile(str(userRegex))
 
 for filename in os.listdir(os.getcwd()):
     with open(os.path.join(os.getcwd(), filename), 'r') as f:
@@ -18,5 +17,5 @@ for filename in os.listdir(os.getcwd()):
             # if userThingy in line:
             #     print(f"Found \"{userThingy}\" in {filename} at {i} line")
             if regexObj.search(line):
-                print(f"Found \"{userThingy}\" in {filename} at {i} line")
+                print(f"Found \"{userRegex}\" in {filename} at {i} line")
             i += 1
