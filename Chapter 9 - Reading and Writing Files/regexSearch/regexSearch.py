@@ -14,8 +14,6 @@ for filename in os.listdir(os.getcwd()):
         fContent = fContent.split("\n")
         i = 1
         for line in fContent:
-            # if userThingy in line:
-            #     print(f"Found \"{userThingy}\" in {filename} at {i} line")
             if regexObj.search(line):
                 print(f"Found \"{userRegex}\" in {filename} at {i} line")
             i += 1
