@@ -10,7 +10,7 @@ dateRegex = re.compile(r"^(.*?)" "\n"
                        r'(([01])?\d)-' "\n"
                        r"(([0123])?\d)-" "\n"
                        r"((19|20)\d\d)" "\n"
-                       r"(.*?)$")
+                       r"(.*?)$", re.X)
 
 # Loop over the files in the working directory.
 for usFilename in os.listdir(os.getcwd()):
@@ -32,8 +32,8 @@ for usFilename in os.listdir(os.getcwd()):
 
     # Get the full, absolute file paths.
     absFilePath = os.path.abspath(os.getcwd())
-    usFilename = absFilePath + usFilename
-    euFilename = absFilePath + euFilename
+    usFilename = absFilePath + '\\' + usFilename
+    euFilename = absFilePath + '\\' + euFilename
 
     # Rename the files.
     print(f"Renaming {usFilename} to {euFilename}.. ")
