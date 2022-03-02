@@ -1,0 +1,1 @@
+This file can be used to demonstrate how selectiveCopy.py works. When user inputs "txt" this file should be copied.
