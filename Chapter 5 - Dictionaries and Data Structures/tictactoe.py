@@ -16,6 +16,24 @@ def printboard():
     print("--+---+---+")
 
 
+def check_winner(tb):
+    # Check rows
+    for row in ['t', 'm', 'b']:
+        if tb[row + 'L'] == tb[row + 'M'] == tb[row + 'R'] != ' ':
+            return True
+
+    # Check columns
+    for col in ['L', 'M', 'R']:
+        if tb['t' + col] == tb['m' + col] == tb['b' + col] != ' ':
+            return True
+
+    # Check diagonals
+    if tb['tL'] == tb['mM'] == tb['bR'] != ' ' or tb['tR'] == tb['mM'] == tb['bL'] != ' ':
+        return True
+
+    return False
+
+
 print("Welcome to TicTacToe! ", end="")
 move = ' '
 turn = 'X'
@@ -32,14 +50,7 @@ for i in range(9):
         except KeyError:
             print("Incorrect move!")
     tb[move] = turn
-    if ((tb['tL'] == tb['tM'] == tb['tR'] and tb['tL'] != ' ' and tb['tM'] != ' ' and tb['tR'] != ' ') or
-            (tb['mL'] == tb['mM'] == tb['mR'] and tb['mL'] != ' ' and tb['mM'] != ' ' and tb['mR'] != ' ') or
-            (tb['bL'] == tb['bM'] == tb['bR'] and tb['bL'] != ' ' and tb['bM'] != ' ' and tb['bR'] != ' ') or
-            (tb['tL'] == tb['mL'] == tb['bL'] and tb['tL'] != ' ' and tb['mL'] != ' ' and tb['bL'] != ' ') or
-            (tb['tM'] == tb['mM'] == tb['bM'] and tb['tM'] != ' ' and tb['mM'] != ' ' and tb['bM'] != ' ') or
-            (tb['tR'] == tb['mR'] == tb['bR'] and tb['tR'] != ' ' and tb['mR'] != ' ' and tb['bR'] != ' ') or
-            (tb['tR'] == tb['mM'] == tb['bL'] and tb['tR'] != ' ' and tb['mM'] != ' ' and tb['bL'] != ' ') or
-            (tb['bL'] == tb['mM'] == tb['tR']) and tb['bL'] != ' ' and tb['mM'] != ' ' and tb['tR'] != ' '):
+    if check_winner(tb):
         printboard()
         print("Player " + turn + " wins!")
         break
